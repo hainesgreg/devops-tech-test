@@ -1,10 +1,12 @@
+#!/usr/bin/env python3
+
 #import required libs
 import os
 import re
 import sys
 import mysql.connector
 from mysql.connector import Error
-import ipdb
+#import ipdb
 #ipdb.trace()
 
 def create_connection(host_name, user_name, user_password, database):
@@ -36,7 +38,7 @@ def get_files():
     version_numbers = []
     dbscripts = os.listdir("dbscripts")
     for file in dbscripts:
-        m=re.search(r'^(\d\d)',file):
+        m=re.search(r'^(\d\d)',file)
         if m:
             version_numbers.append(int(m.group(0)))
     db_version = get_db_version(cursor)
