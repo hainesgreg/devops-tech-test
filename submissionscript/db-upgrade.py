@@ -6,7 +6,7 @@ import re
 import sys
 import mysql.connector
 from mysql.connector import Error
-#import ipdb
+import ipdb
 #ipdb.trace()
 
 def create_connection(host_name, user_name, user_password, database):
@@ -24,7 +24,7 @@ def create_connection(host_name, user_name, user_password, database):
 
     return connection
 
-connection = create_connection("localhost", "dev", "123456", "devopstt")
+connection = create_connection("mysql_container", "dev", "123456", "devopstt")
 
 cursor=connection.cursor()
 
@@ -34,9 +34,9 @@ def get_db_version(cursor):
     for row in cursor:
         return row[0]
 
-def get_files():
+def get_files(cursor):
     version_numbers = []
-    dbscripts = os.listdir("dbscripts")
+    dbscripts = os.listdir("scripts")
     for file in dbscripts:
         m=re.search(r'^(\d\d)',file)
         if m:
@@ -45,12 +45,21 @@ def get_files():
     if max (version_numbers) == db_version:
         print("BD version is already up to date") 
         sys.exit(0)
-    else:
-        for version in sort(version_numbers):
+    else :
+        version_numbers.sort()
+        for version in [x for x in version_numbers if x > db_version]:
             for file in dbscripts:
-                if version in file:
-                    with open(file) as f:
-                        cursor.execute(f.read())
+                if str(version) in file:
+                    print(version)
+                    with open('scripts/'+file) as f:
+                        #ipdb.set_trace()
+                        print('scripts/'+file)
+                        #cursor.execute(f.read())
+                        print("Updating to version {}".format(version))    
+                        cursor.execute("update versionTable set version={};".format(version))
+                        connection.commit()   
+
+get_files(cursor)                        
 
 
 
