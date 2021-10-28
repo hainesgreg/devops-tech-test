@@ -1,0 +1,68 @@
+Observations 
+
+The overall objective of this task is to upgrade a MySQL database by evaluation and executing some .sql scripts, using a programming language of choice from listed options. 
+
+There are two docker containers, one where the script will be run from (exec_container) and the other housing the MySQL DB (mysql_container), both of which are connected on a default bridged network. The Docker containers are defined using a docker-compose.yml and a Dockerfile is used to assemble the images as they’re pulled from the remote repository.
+
+Understanding of requirements (high level)
+
+1. 	Check folders containing SQL scripts
+2. 	Identify latest version in folder
+3. 	Check contents of versionTable
+4. 	Compare version number in db table against version numbers in folder
+5. 	If db version is latest end script otherwise identify which scripts need to be run
+6. 	Run scripts
+7. 	Update the db version table to latest version numbers
+
+Understanding of requirements (low level)
+
+import required Python libraries
+write function to connect to MYSQL DB (and cursor
+write function to obtain DB version number
+write function to get SQL scripts in list format and apply required logic
+iterate through the list, If db version is higher do nothing, if db version is lower run the script AND update the db version.
+end script
+
+Connect to SQL DB from inside mysql_container to inspect MySQL DB
+
+mysql -uroot -p123456
+show databases;
+use devopstt;
+show tables;
+describe versionTable;
+select version from versionTable;
+
+Other requirements
+Make script executable (chmod +x <name_of_file>)
+Expose port 3306 (update in docker-compose.yaml)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
